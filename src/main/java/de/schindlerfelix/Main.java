@@ -25,6 +25,8 @@ public class Main {
     public static void main(String[] args) {
         handleArguments(args);
 
+        WeatherDataParser wp = new WeatherDataParser();
+        wp.printWeather();
     }
 
     /**
