@@ -5,6 +5,6 @@ package de.schindlerfelix;
  */
 public class WeatherDataParser {
     public String parseWeather(final String jsonWeatherDataFilename) {
-        return ;
+        return "";
     }
 }
