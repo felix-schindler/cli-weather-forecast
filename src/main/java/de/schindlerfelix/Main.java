@@ -37,19 +37,19 @@ public class Main {
 
         // Datei existiert && jünger als 10 Minuten
         if(weatherFile.isFile() && cacheFileAge<=600) {
-            // Log in "logs/cache.log"
+            // Logs in "logs/cache.log"
+            // Caches in "cache/city.weatherData.json"
             try {
                 FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
-                System.out.println("log written.");
             } catch (IOException e) {
                 System.out.println("Failed to write the Log.");
                 e.printStackTrace();
             }
-            System.out.println("using cache");
         } else {
             System.out.println("creating new file");
             weatherFile.delete(); // eig redundant, da datei auch einf überschrieben werden kann
             try {
+                // TODO: set URL q/id (this.fromJsom)
                 FileUtils.copyURLToFile(new URL("https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b"), new File("cache/" + city.toLowerCase() + ".weatherData.json"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,12 +63,14 @@ public class Main {
     /**
      * handles the arguments
      * @param args String[] - jar arguments
-     * 1. Stadt setzen -> !Leerzeichen
+     * TODO: Stadt setzen -> !Leerzeichen! (Frankfurt am Main)
      * Gibt's die Stadt in der JSON Datei?
      *      - Liste zur mit Auswahl ausgeben
      *      - Link: &id=id;
      *      - fromJson=true
-     * sonst: Stadt setzen
+     * sonst:
+     *      - Stadt setzen
+     *      - fromJson=false
      */
     public static void handleArguments(String[] args) {
 

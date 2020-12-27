@@ -13,10 +13,16 @@ import java.util.Scanner;
  * Parsing the weather data
  */
 public class WeatherDataParser {
-    static String weatherStr;
-    static JSONObject weather;
+    String weatherStr;
+    JSONObject weather;
 
-    public static void printWeather() {
+    // TODO: Implement, Read JSON from File
+    public String parseWeather(final String jsonWeatherDataFilename) {
+        return "";
+    }
+
+    // TODO: Print weather from File
+    public void printWeather() {
         try {
             // Variablen setzen
             String url="https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q=Xian&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
@@ -56,12 +62,8 @@ public class WeatherDataParser {
                 oldDateStr = dateStr;
             }
         } catch(IOException e) {
+            // TODO: Fancy Fehlerausgabe
             e.printStackTrace();
         }
     }
-    /*
-    public static String parseWeather(final String jsonWeatherDataFilename) {
-        return "";
-    }
-    */
 }
