@@ -22,7 +22,7 @@ public class WeatherDataParser {
             String url="https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q=Xian&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
             weatherStr="";
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
-            SimpleDateFormat simple_time = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
             String dateStr, timeStr, oldDateStr="-1", tempStr, dscStr;
             double temp;
             Date date;
@@ -49,9 +49,9 @@ public class WeatherDataParser {
                 }
 
                 if (temp>0)
-                    System.out.format("%4s %4s:  %5.2f °C, %s \n", " ", timeStr, temp, dscStr);
+                    System.out.format("%4s %5s:  %5.2f °C, %s \n", " ", timeStr, temp, dscStr);
                 else
-                    System.out.format("%4s %4s: %6.2f °C, %s \n", " ", timeStr, temp, dscStr);
+                    System.out.format("%4s %5s: %6.2f °C, %s \n", " ", timeStr, temp, dscStr);
 
                 oldDateStr = dateStr;
             }
