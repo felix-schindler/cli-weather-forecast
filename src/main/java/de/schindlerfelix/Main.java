@@ -1,10 +1,15 @@
 package de.schindlerfelix;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
 public class Main {
-    // TODO: Classes:
-    String city;
-    int id;
-    boolean fromJson;
+    static String city="Xian";
+    static int id;
+    static boolean fromJson;
 
     /**
      * @param args String[] - City
@@ -25,8 +30,34 @@ public class Main {
     public static void main(String[] args) {
         handleArguments(args);
 
-        WeatherDataParser wp = new WeatherDataParser();
-        wp.printWeather();
+        File logFile = new File("logs/cache.log");
+        File weatherFile = new File("cache/" + city + ".weatherData.json");
+        long timeStampNow = System.currentTimeMillis();
+        long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
+
+        // Datei existiert && jünger als 10 Minuten
+        if(weatherFile.isFile() && cacheFileAge<=600) {
+            // Log in "logs/cache.log"
+            try {
+                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
+                System.out.println("log written.");
+            } catch (IOException e) {
+                System.out.println("Failed to write the Log.");
+                e.printStackTrace();
+            }
+            System.out.println("using cache");
+        } else {
+            System.out.println("creating new file");
+            weatherFile.delete(); // eig redundant, da datei auch einf überschrieben werden kann
+            try {
+                FileUtils.copyURLToFile(new URL("https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b"), new File("cache/" + city.toLowerCase() + ".weatherData.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // WeatherDataParser wp = new WeatherDataParser();
+        // wp.printWeather();
     }
 
     /**
