@@ -2,8 +2,9 @@ package de.schindlerfelix;
 
 import org.json.JSONObject;
 
+
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -20,7 +21,6 @@ public class WeatherDataParser {
     public void printWeather(final String jsonWeatherDataFilename) {
         try {
             // Variablen setzen
-            String url="https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q=Xian&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
             SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
             String dateStr, timeStr, oldDateStr="-1", tempStr, dscStr;
@@ -29,7 +29,7 @@ public class WeatherDataParser {
 
             // API request && Create JSONObject
             // TODO: do this in with given file
-            Scanner scan = new Scanner(new URL(url).openStream());
+            Scanner scan = new Scanner(new File(jsonWeatherDataFilename));
             while (scan.hasNext())
                 weatherStr = weatherStr.concat(scan.nextLine());
             scan.close();
