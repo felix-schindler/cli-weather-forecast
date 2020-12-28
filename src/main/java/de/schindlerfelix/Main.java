@@ -1,8 +1,10 @@
 package de.schindlerfelix;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
@@ -96,5 +98,17 @@ public class Main {
             scan = null;
         }
         city = input;
+
+        String cityString="";
+        Scanner scan = null;
+        try {
+            scan = new Scanner(new File("data/cities.json"));
+            while (scan.hasNext())
+                cityString = cityString.concat(scan.nextLine());
+            scan.close();
+            JSONObject city = new JSONObject(cityString);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
