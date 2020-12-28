@@ -23,16 +23,15 @@ public class WeatherDataParser {
             // Variablen setzen
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
             SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
-            String dateStr, timeStr, oldDateStr="-1", tempStr, dscStr;
+            String dateStr, oldDateStr="-1", timeStr, dscStr, weatherStr="";
             double temp;
             Date date;
 
             // API request && Create JSONObject
-            // TODO: do this in with given file
-            Scanner scan = new Scanner(new File(jsonWeatherDataFilename));
-            while (scan.hasNext())
-                weatherStr = weatherStr.concat(scan.nextLine());
-            scan.close();
+            Scanner sc = new Scanner(new File(jsonWeatherDataFilename));
+            while (sc.hasNext())
+                weatherStr = weatherStr.concat(sc.nextLine());
+            sc = null;
 
             weather = new JSONObject(weatherStr);
 

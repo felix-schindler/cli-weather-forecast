@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -33,16 +34,14 @@ public class Main {
     public static void main(String[] args) {
         handleArguments(args);
 
-        generateFile();
-        // WeatherDataParser wp = new WeatherDataParser();
-        // wp.printWeather(wp.parseWeather(generateFile()));
+        WeatherDataParser wp = new WeatherDataParser();
+        wp.printWeather(generateFile());
     }
 
     public static String generateFile() {
-        String fileName=null;
-
         File logFile = new File("data/temp/logs/cache.log");
-        File weatherFile = new File("data/temp/cache/" + city + ".weatherData.json");
+        String fileName = "data/temp/cache/" + city.toLowerCase() + ".weatherData.json", url;
+        File weatherFile = new File(fileName);
         long timeStampNow = System.currentTimeMillis();
         long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
 
@@ -56,14 +55,12 @@ public class Main {
             }
         } else {
             try {
-                String url;
                 if (fromJson) {
                     url =  "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 } else {
                     url = "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 }
-                fileName = "data/temp/cache/" + city.toLowerCase() + ".weatherData.json";
-                // Caches in "temp/cache/city.weatherData.json"
+                // Caches in "data/temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -98,7 +95,9 @@ public class Main {
             scan = null;
         }
         city = input;
+        fromJson=false;
 
+        /*
         String cityString="";
         Scanner scan = null;
         try {
@@ -110,5 +109,6 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        */
     }
 }
