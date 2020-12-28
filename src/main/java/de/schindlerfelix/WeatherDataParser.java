@@ -17,7 +17,9 @@ public class WeatherDataParser {
     String weatherStr="";
     JSONObject weather;
 
-    // TODO: Print weather from given JSONFile
+    /**
+     * @param jsonWeatherDataFilename String - JsonWeatherDataFilepath
+     */
     public void printWeather(final String jsonWeatherDataFilename) {
         try {
             // Variablen setzen
@@ -57,8 +59,7 @@ public class WeatherDataParser {
                 oldDateStr = dateStr;
             }
         } catch(IOException e) {
-            // TODO: Fancy Fehlerausgabe
-            System.out.println("Die von Ihnen eingegebene Stadt existiert leider in einem Paralleluniversum. Bitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
+            System.out.println("Die von Ihnen eingegebene Stadt existiert leider in einem Paralleluniversum. \nBitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
         }
     }
 }

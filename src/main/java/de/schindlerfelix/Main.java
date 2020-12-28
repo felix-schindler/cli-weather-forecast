@@ -16,20 +16,7 @@ public class Main {
     static boolean fromJson;
 
     /**
-     * @param args String[] - City
-     */
-    /*
-     * Link mit Stadtname:  https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q=Berlin&appid=5f54d5225ad6721e8f86112bbfaa6e7b
-     * Link mit id:         https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id=707860&appid=5f54d5225ad6721e8f86112bbfaa6e7b
-     * Letzte Anfrage mit genau dieser Stadt
-     *      - kürzer als 10 Minuten her -> Cache -> In Log-File schreiben
-     *      - länger: API Request
-     *          - URL zusammenbauen
-     *              - fromJson? id : stadt;
-     *          - Als cache speichern
-     * 1. Wetter ausgeben
-     *      - Zeit umrechnen von UNIX Timestamp zu Datum & Uhrzeit
-     *      - Grad Kelvin -> Celsius
+     * @param args String[] - Jar command line arguments
      */
     public static void main(String[] args) {
         handleArguments(args);
@@ -38,6 +25,10 @@ public class Main {
         wp.printWeather(generateFile());
     }
 
+    /**
+     * Generating the WeatherData JSON File
+     * @return String - Filepath of the generated File
+     */
     public static String generateFile() {
         File logFile = new File("data/temp/logs/cache.log");
         String fileName = "data/temp/cache/" + city.toLowerCase() + ".weatherData.json", url;
@@ -71,16 +62,7 @@ public class Main {
     }
 
     /**
-     * handles the arguments
-     * @param args String[] - jar arguments
-     * TODO: Stadt setzen -> !Leerzeichen! (Frankfurt am Main)
-     * Gibt's die Stadt in der JSON Datei?
-     *      - Liste zur mit Auswahl ausgeben
-     *      - Link: &id=id;
-     *      - fromJson=true
-     * sonst:
-     *      - Stadt setzen
-     *      - fromJson=false
+     * @param args String[] - Jar command line arguments
      */
     public static void handleArguments(String[] args) {
         String input;
@@ -96,19 +78,5 @@ public class Main {
         }
         city = input;
         fromJson=false;
-
-        /*
-        String cityString="";
-        Scanner scan = null;
-        try {
-            scan = new Scanner(new File("data/cities.json"));
-            while (scan.hasNext())
-                cityString = cityString.concat(scan.nextLine());
-            scan.close();
-            JSONObject city = new JSONObject(cityString);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        */
     }
 }
