@@ -14,7 +14,7 @@ import java.util.Scanner;
  * Parsing the weather data
  */
 public class WeatherDataParser {
-    String weatherStr;
+    String weatherStr="";
     JSONObject weather;
 
     // TODO: Print weather from given JSONFile
@@ -23,7 +23,7 @@ public class WeatherDataParser {
             // Variablen setzen
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
             SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
-            String dateStr, oldDateStr="-1", timeStr, dscStr, weatherStr="";
+            String dateStr, oldDateStr="-1", timeStr, dscStr;
             double temp;
             Date date;
 

@@ -51,7 +51,7 @@ public class Main {
             try {
                 FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"data/temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Fehler beim schreiben des Logs");
             }
         } else {
             try {
@@ -63,7 +63,7 @@ public class Main {
                 // Caches in "data/temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Stadt wurde nicht gefunden.");
             }
         }
 
