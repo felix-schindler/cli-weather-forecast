@@ -58,7 +58,7 @@ public class WeatherDataParser {
             }
         } catch(IOException e) {
             // TODO: Fancy Fehlerausgabe
-            e.printStackTrace();
+            System.out.println("Die von Ihnen eingegebene Stadt existiert leider in einem Paralleluniversum. Bitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
         }
     }
 }
