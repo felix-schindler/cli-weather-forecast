@@ -1,7 +1,9 @@
 package de.schindlerfelix;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -17,16 +19,13 @@ public class WeatherDataParser {
     JSONObject weather;
 
     // TODO: Implement, Read JSON from File
-    public String parseWeather(final String jsonWeatherDataFilename) {
-        return "";
-    }
+    public String parseWeather(final String jsonWeatherDataFilename) { return ""; }
 
-    // TODO: Print weather from File
-    public void printWeather() {
-        try {
+    // TODO: Print weather from given String
+    public void printWeather(final String weatherStr) {
+        // try {
             // Variablen setzen
             String url="https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q=Xian&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
-            weatherStr="";
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
             SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
             String dateStr, timeStr, oldDateStr="-1", tempStr, dscStr;
@@ -34,10 +33,13 @@ public class WeatherDataParser {
             Date date;
 
             // API request && Create JSONObject
+            /*
+            TODO: do this in parseWeather() with given file
             Scanner scan = new Scanner(new URL(url).openStream());
             while (scan.hasNext())
                 weatherStr = weatherStr.concat(scan.nextLine());
             scan.close();
+             */
             weather = new JSONObject(weatherStr);
 
             for (int i = 0; i < weather.getJSONArray("list").length(); i++) {
@@ -61,9 +63,11 @@ public class WeatherDataParser {
 
                 oldDateStr = dateStr;
             }
+        /*
         } catch(IOException e) {
             // TODO: Fancy Fehlerausgabe
             e.printStackTrace();
         }
+         */
     }
 }

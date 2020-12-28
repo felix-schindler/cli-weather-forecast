@@ -30,34 +30,44 @@ public class Main {
     public static void main(String[] args) {
         handleArguments(args);
 
-        File logFile = new File("logs/cache.log");
-        File weatherFile = new File("cache/" + city + ".weatherData.json");
+        generateFile();
+        // WeatherDataParser wp = new WeatherDataParser();
+        // wp.printWeather(wp.parseWeather(generateFile()));
+    }
+
+    public static String generateFile() {
+        String fileName=null;
+
+        File logFile = new File("temp/logs/cache.log");
+        File weatherFile = new File("temp/cache/" + city + ".weatherData.json");
         long timeStampNow = System.currentTimeMillis();
         long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
 
         // Datei existiert && jünger als 10 Minuten
         if(weatherFile.isFile() && cacheFileAge<=600) {
             // Logs in "logs/cache.log"
-            // Caches in "cache/city.weatherData.json"
             try {
-                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
+                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
             } catch (IOException e) {
-                System.out.println("Failed to write the Log.");
                 e.printStackTrace();
             }
         } else {
-            System.out.println("creating new file");
-            weatherFile.delete(); // eig redundant, da datei auch einf überschrieben werden kann
             try {
-                // TODO: set URL q/id (this.fromJsom)
-                FileUtils.copyURLToFile(new URL("https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b"), new File("cache/" + city.toLowerCase() + ".weatherData.json"));
+                String url;
+                if (fromJson) {
+                    url =  "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
+                } else {
+                    url = "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
+                }
+                fileName = "temp/cache/" + city.toLowerCase() + ".weatherData.json";
+                // Caches in "temp/cache/city.weatherData.json"
+                FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        // WeatherDataParser wp = new WeatherDataParser();
-        // wp.printWeather();
+        return fileName;
     }
 
     /**
