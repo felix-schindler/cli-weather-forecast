@@ -39,8 +39,8 @@ public class Main {
     public static String generateFile() {
         String fileName=null;
 
-        File logFile = new File("temp/logs/cache.log");
-        File weatherFile = new File("temp/cache/" + city + ".weatherData.json");
+        File logFile = new File("data/temp/logs/cache.log");
+        File weatherFile = new File("data/temp/cache/" + city + ".weatherData.json");
         long timeStampNow = System.currentTimeMillis();
         long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
 
@@ -48,7 +48,7 @@ public class Main {
         if(weatherFile.isFile() && cacheFileAge<=600) {
             // Logs in "logs/cache.log"
             try {
-                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
+                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"data/temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -60,7 +60,7 @@ public class Main {
                 } else {
                     url = "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 }
-                fileName = "temp/cache/" + city.toLowerCase() + ".weatherData.json";
+                fileName = "data/temp/cache/" + city.toLowerCase() + ".weatherData.json";
                 // Caches in "temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
