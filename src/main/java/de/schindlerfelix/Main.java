@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class Main {
-    static String city="Xian";
+    static String city;
     static int id;
     static boolean fromJson;
 
@@ -85,17 +85,20 @@ public class Main {
      */
     public static void handleArguments(String[] args) {
 
-        try (final Scanner scan = new Scanner(System.in)) {
-            System.out.print("Stadtname: ");
-            final String input = scan.nextLine();
-
+        final String input;
+        if (args.length > 0) {
+            input = args[0];
+        } else {
+            final Scanner scan = new Scanner(System.in);
+                System.out.print("Stadtname: ");
+                input = scan.nextLine();
+        }
             if (input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9")) {
                 System.out.println("Es dürfen keine Zahlen sowie Sonderzeichen enthalten sein!");
                 System.out.println("Geben Sie einen neuen Namen ein: ");
             } else {
                 city = input;
-                //city = args[0];
             }
         }
     }
-}
+
