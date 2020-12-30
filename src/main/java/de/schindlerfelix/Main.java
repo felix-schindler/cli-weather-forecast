@@ -1,6 +1,7 @@
 package de.schindlerfelix;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
@@ -20,9 +23,29 @@ public class Main {
      */
     public static void main(String[] args) {
         handleArguments(args);
-
         WeatherDataParser wp = new WeatherDataParser();
         wp.printWeather(generateFile());
+
+        try {
+            String citiesStr = Files.readString(Path.of("data/cities.json"));
+            String cityName;
+
+            JSONObject citiesJson = new JSONObject(citiesStr);
+            for (int i = 0; i < citiesJson.getJSONArray("cities").length(); i++) {
+                JSONObject cityJson = citiesJson.getJSONArray("cities").getJSONObject(i);
+                cityName = cityJson.getString("name");
+
+                // wenn cityName inclues sth from input city
+                // TODO: doppelte filtern; zu viele Ergebnisse -> "Bonn"
+                if (cityName.length()>=city.length()) {
+                    if (cityName/*.substring(0, city.length())*/.contains(city)) {
+                        System.out.println(cityName);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Fehler beim einlesen der Städte");
+        }
     }
 
     /**
