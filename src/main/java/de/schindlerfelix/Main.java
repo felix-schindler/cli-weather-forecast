@@ -5,12 +5,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -23,38 +22,64 @@ public class Main {
      */
     public static void main(String[] args) {
         handleArguments(args);
-        WeatherDataParser wp = new WeatherDataParser();
-        wp.printWeather(generateFile());
 
         try {
             String citiesStr = Files.readString(Path.of("data/cities.json"));
             String cityName;
+            int cityID;
 
             JSONObject citiesJson = new JSONObject(citiesStr);
-            for (int i = 0; i < citiesJson.getJSONArray("cities").length(); i++) {
+            JSONArray citiesJsonJSONArray = citiesJson.getJSONArray("cities");
+            int citiesJsonJSONArrayLength = citiesJsonJSONArray.length();
+
+            ArrayList<Integer> cityIds = new ArrayList<Integer>();
+            ArrayList<String> cityNames = new ArrayList<String>();
+
+            for (int i = 0; i < citiesJsonJSONArrayLength; i++) {
                 JSONObject cityJson = citiesJson.getJSONArray("cities").getJSONObject(i);
                 cityName = cityJson.getString("name");
+                cityID = cityJson.getInt("id");
 
-                // wenn cityName inclues sth from input city
-                // TODO: doppelte filtern; zu viele Ergebnisse -> "Bonn"
+                // if cityName includes sth from input city
+                // TODO: doppelte einträge filtern; zu viele Ergebnisse -> "Bonn"
                 if (cityName.length()>=city.length()) {
+                    // Comment: Has to begin with the same name as the city e g city="Bonn" => "Bonndorf"==true
                     if (cityName/*.substring(0, city.length())*/.contains(city)) {
-                        System.out.println(cityName);
+                        cityIds.add(cityID);
+                        cityNames.add(cityName);
                     }
                 }
+            }
+
+            if (cityNames.size()>0) {
+                System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
+                for (int i = 0; i < cityNames.size(); i++) {
+                    System.out.println(i+1+". "+cityNames.get(i));
+                }
+
+                final Scanner sc = new Scanner(System.in);
+                int choice = sc.nextInt();
+                id = cityIds.get(--choice);
+                fromJson = true;
             }
         } catch (IOException e) {
             System.out.println("Fehler beim einlesen der Städte");
         }
+
+        WeatherDataParser wp = new WeatherDataParser();
+        wp.printWeather(generateFile());
     }
 
     /**
-     * Generating the WeatherData JSON File
+     * Generating the WeatherData JSON File for the chosen city
      * @return String - Filepath of the generated File
      */
     public static String generateFile() {
+        String fileName, url;
         File logFile = new File("data/temp/logs/cache.log");
-        String fileName = "data/temp/cache/" + city.toLowerCase() + ".weatherData.json", url;
+
+        fileName = fromJson ? "data/temp/cache/" + id + ".weatherData.json" : "data/temp/cache/" + city.toLowerCase() + ".weatherData.json";
+
         File weatherFile = new File(fileName);
         long timeStampNow = System.currentTimeMillis();
         long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
@@ -69,11 +94,7 @@ public class Main {
             }
         } else {
             try {
-                if (fromJson) {
-                    url =  "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
-                } else {
-                    url = "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
-                }
+                url = fromJson? "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b" : "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 // Caches in "data/temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
@@ -95,7 +116,7 @@ public class Main {
             Scanner scan = new Scanner(System.in);
             do {
                 System.out.print("Stadtname: ");
-                input = scan.nextLine();
+                input = scan.nextLine();        // TODO: rm leading and trailing whitespace
             } while (input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9"));
             scan = null;
         }
