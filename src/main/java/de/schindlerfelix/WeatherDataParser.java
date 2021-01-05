@@ -24,7 +24,7 @@ public class WeatherDataParser {
         try {
             // Variablen setzen
             SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
-            SimpleDateFormat simple_time = new SimpleDateFormat("H:mm");
+            SimpleDateFormat simple_time = new SimpleDateFormat("HH:mm");
             String dateStr, oldDateStr="-1", timeStr, dscStr;
             double temp;
             Date date;

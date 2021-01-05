@@ -52,16 +52,24 @@ public class Main {
             }
 
             if (cityNames.size()>0) {
-                System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
+                //Bei Goik wurde erst nach der Abfrage aufgefordert eine Auswahlmöglichkeit zu wählen
+                //System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
+                System.out.println();
                 for (int i = 0; i < cityNames.size(); i++) {
-                    System.out.println(i+1+". "+cityNames.get(i));
+                    System.out.println(i + 1 + " = " + cityNames.get(i));
                 }
+
+                //TODO: die Summe aller ausgegebener Städte durch das "+" ersetzen
+                System.out.println();
+                System.out.println("Bitte gültige Auswahl 1 bis " + "x" + " treffen");
 
                 final Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
                 id = cityIds.get(--choice);
                 fromJson = true;
+
             }
+        //TODO: Text wird nicht ausgegeben, wenn die Eingabe Fehlerhaft passiert
         } catch (IOException e) {
             System.out.println("Fehler beim einlesen der Städte");
         }
