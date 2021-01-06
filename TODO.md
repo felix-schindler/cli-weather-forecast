@@ -7,6 +7,8 @@ Link mit id:         https://api.openweathermap.org/data/2.5/forecast?lang=de&un
 1. Stadt eingeben
 	- Gibt's die Stadt in der JSON Datei?
 		- Liste mit Auswahl ausgeben
+			° bei nur einem Treffer direkt das Wetter ausgeben
+			° Zu viele Treffer bei Beispielweise Bonn (Filter erweietrn?)
 		- Stadt auswählen
 		- fromJson=true
 	- sonst:
@@ -27,3 +29,4 @@ Link mit id:         https://api.openweathermap.org/data/2.5/forecast?lang=de&un
 	- Zeit umrechnen von UNIX Timestamp zu Datum & Uhrzeit
 	- Datum Trennen, Uhrzeit untereinander ausgeben
 	- Celsius
+
