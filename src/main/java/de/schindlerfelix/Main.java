@@ -59,9 +59,8 @@ public class Main {
                     System.out.println(i + 1 + " = " + cityNames.get(i));
                 }
 
-                //TODO: die Summe aller ausgegebener Städte durch das "+" ersetzen
                 System.out.println();
-                System.out.println("Bitte gültige Auswahl 1 bis " + "x" + " treffen");
+                System.out.println("Bitte gültige Auswahl 1 bis " + cityNames.size() + " treffen");
 
                 final Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
