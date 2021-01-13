@@ -24,8 +24,10 @@ public class Main {
         handleArguments(args);
 
         try {
-            String citiesStr = Files.readString(Path.of("data/cities.json"));
-            String cityName;
+            String citiesStr = "{ \"cities\": [";
+            citiesStr += Files.readString(Path.of("data/cities.json"));
+            citiesStr += "]}";
+            String cityName, cityCountry;
             int cityID;
 
             JSONObject citiesJson = new JSONObject(citiesStr);
@@ -34,39 +36,42 @@ public class Main {
 
             ArrayList<Integer> cityIds = new ArrayList<Integer>();
             ArrayList<String> cityNames = new ArrayList<String>();
+            ArrayList<String> cityCountries = new ArrayList<String>();
 
             for (int i = 0; i < citiesJsonJSONArrayLength; i++) {
                 JSONObject cityJson = citiesJson.getJSONArray("cities").getJSONObject(i);
                 cityName = cityJson.getString("name");
                 cityID = cityJson.getInt("id");
+                cityCountry = cityJson.getString("country");
 
                 // if cityName includes sth from input city
                 // TODO: doppelte einträge filtern; zu viele Ergebnisse -> "Bonn"
                 if (cityName.length()>=city.length()) {
                     // Comment: Has to begin with the same name as the city e g city="Bonn" => "Bonndorf"==true
                     if (cityName/*.substring(0, city.length())*/.contains(city)) {
-                        cityIds.add(cityID);
-                        cityNames.add(cityName);
+                        if (!cityIds.contains(cityID)) {
+                            cityIds.add(cityID);
+                            cityNames.add(cityName);
+                            cityCountries.add(cityCountry);
+                        }
                     }
                 }
             }
 
+            // TODO: Wenn es nur eine einzige Stadt gibt
             if (cityNames.size()>0) {
-                //Bei Goik wurde erst nach der Abfrage aufgefordert eine Auswahlmöglichkeit zu wählen
-                //System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
-                System.out.println();
+                // Bei Goik wurde erst nach der Abfrage aufgefordert eine Auswahlmöglichkeit zu wählen
+                // System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
                 for (int i = 0; i < cityNames.size(); i++) {
-                    System.out.println(i + 1 + " = " + cityNames.get(i));
+                    System.out.println(i + 1 + " = " + cityNames.get(i) + ", " + cityCountries.get(i));
                 }
 
-                System.out.println();
-                System.out.println("Bitte gültige Auswahl 1 bis " + cityNames.size() + " treffen");
+                System.out.println("\nBitte gültige Auswahl 1 bis " + cityNames.size() + " treffen");
 
                 final Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
                 id = cityIds.get(--choice);
                 fromJson = true;
-
             }
         //TODO: Text wird nicht ausgegeben, wenn die Eingabe Fehlerhaft passiert
         } catch (IOException e) {
@@ -108,7 +113,6 @@ public class Main {
                 System.out.println("Stadt wurde nicht gefunden.");
             }
         }
-
         return fileName;
     }
 
