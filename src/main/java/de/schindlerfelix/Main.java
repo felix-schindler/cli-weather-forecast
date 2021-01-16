@@ -106,11 +106,12 @@ public class Main {
             }
         } else {
             try {
+                // TODO: Url encode City
                 url = fromJson? "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b" : "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 // Caches in "data/temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
             } catch (IOException e) {
-                System.out.println("Stadt wurde nicht gefunden.");
+                System.out.println("Die von Ihnen eingegebene Stadt existiert leider in einem Paralleluniversum. \nBitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
             }
         }
         return fileName;
@@ -125,10 +126,10 @@ public class Main {
             input = args[0];
         } else {
             Scanner scan = new Scanner(System.in);
+            // TODO: Fehlermeldung, wenn Eingabe falsch war
             do {
                 System.out.print("Stadtname: ");
-                input = scan.nextLine();        // TODO: rm leading and trailing whitespace
-
+                input = scan.nextLine();
             } while (input.trim().isEmpty() || input.contains("#") ||input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9"));
             scan = null;
         }

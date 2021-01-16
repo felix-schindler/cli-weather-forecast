@@ -1,8 +1,6 @@
 package de.schindlerfelix;
 
 import org.json.JSONObject;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,6 +28,7 @@ public class WeatherDataParser {
             Date date;
 
             // API request && Create JSONObject
+            // TODO: Read complete File at once, not line for line
             Scanner sc = new Scanner(new File(jsonWeatherDataFilename));
             while (sc.hasNext())
                 weatherStr = weatherStr.concat(sc.nextLine());
@@ -59,7 +58,8 @@ public class WeatherDataParser {
                 oldDateStr = dateStr;
             }
         } catch(IOException e) {
-            System.out.println("Die von Ihnen eingegebene Stadt existiert leider in einem Paralleluniversum. \nBitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
+            // TODO: Fehler beim Einlesen der Datei.
+            System.out.println("");
         }
     }
 }
