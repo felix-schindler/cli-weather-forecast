@@ -122,15 +122,22 @@ public class Main {
      */
     public static void handleArguments(String[] args) {
         String input;
+        boolean repeat = false;
         if (args.length > 0) {
             input = args[0];
         } else {
             Scanner scan = new Scanner(System.in);
             // TODO: Fehlermeldung, wenn Eingabe falsch war
             do {
+                if (repeat)
+                    System.out.println("Ungültige Zeichenfolge");
                 System.out.print("Stadtname: ");
                 input = scan.nextLine();
-            } while (input.trim().isEmpty() || input.contains("#") ||input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9"));
+                if (input.trim().isEmpty() || input.contains("#") ||input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9"))
+                    repeat = true;
+                else
+                    repeat = false;
+            } while (repeat);
             scan = null;
         }
         city = input;
