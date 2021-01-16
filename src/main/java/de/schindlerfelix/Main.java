@@ -123,6 +123,8 @@ public class Main {
     public static void handleArguments(String[] args) {
         String input;
         boolean repeat = false;
+        //char[] ungültigeZeichen = {'#','!','/','_','?','€','0','1','2','3','4','5','6','7','8','9'};
+        String[] ungültigeZeichen = {"#","!","/","_","?","€","0","1","2","3","4","5","6","7","8","9"};
         if (args.length > 0) {
             input = args[0];
         } else {
@@ -133,10 +135,18 @@ public class Main {
                     System.out.println("Ungültige Zeichenfolge");
                 System.out.print("Stadtname: ");
                 input = scan.nextLine();
-                if (input.trim().isEmpty() || input.contains("#") ||input.contains("!") || input.contains("/") || input.contains("_") || input.contains("?") || input.contains("€") || input.contains("0") || input.contains("1") || input.contains("2") || input.contains("3") || input.contains("4") || input.contains("5") || input.contains("6") || input.contains("7") || input.contains("8") || input.contains("9"))
+                if (input.trim().isEmpty()) {
                     repeat = true;
-                else
+                }else {
                     repeat = false;
+                }
+                for (int i = 0; i < ungültigeZeichen.length; i++) {
+                    if (input.contains(ungültigeZeichen[i])) {
+                        repeat = false;
+                    }else{
+                        repeat = true;
+                    }
+                }
             } while (repeat);
             scan = null;
         }
