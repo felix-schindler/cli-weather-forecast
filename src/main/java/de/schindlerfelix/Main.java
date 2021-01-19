@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
     static String city;
@@ -45,7 +46,7 @@ public class Main {
                 cityCountry = cityJson.getString("country");
 
                 // if cityName includes sth from input city
-                // TODO: doppelte einträge filtern; zu viele Ergebnisse -> "Bonn"
+                // TODO: zu viele Ergebnisse -> "Bonn"
                 if (cityName.length()>=city.length()) {
                     // Comment: Has to begin with the same name as the city e g city="Bonn" => "Bonndorf"==true
                     if (cityName/*.substring(0, city.length())*/.contains(city)) {
@@ -58,8 +59,10 @@ public class Main {
                 }
             }
 
-            // TODO: Wenn es nur eine einzige Stadt gibt
-            if (cityNames.size()>0) {
+            if (cityNames.size()==1) {
+                id = cityIds.get(0);
+                fromJson = true;
+            } else if (cityNames.size()>0) {
                 // Bei Goik wurde erst nach der Abfrage aufgefordert eine Auswahlmöglichkeit zu wählen
                 // System.out.println("Bitte wählen Sie eine der folgenden Möglichkeiten: ");
                 for (int i = 0; i < cityNames.size(); i++) {
@@ -70,6 +73,12 @@ public class Main {
 
                 final Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
+
+                while (choice<0 || choice>cityIds.size()) {
+                    System.out.println("Ungültige Eingabe, bitte versuchen Sie es erneut.");
+                    choice = sc.nextInt();
+                }
+
                 id = cityIds.get(--choice);
                 fromJson = true;
             }
@@ -100,13 +109,13 @@ public class Main {
         if(weatherFile.isFile() && cacheFileAge<=600) {
             // Logs in "logs/cache.log"
             try {
+                // TODO: Url encode City
                 FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"data/temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
             } catch (IOException e) {
                 System.out.println("Fehler beim schreiben des Logs");
             }
         } else {
             try {
-                // TODO: Url encode City
                 url = fromJson? "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b" : "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
                 // Caches in "data/temp/cache/city.weatherData.json"
                 FileUtils.copyURLToFile(new URL(url), new File(fileName));
@@ -123,8 +132,6 @@ public class Main {
     public static void handleArguments(String[] args) {
         String input;
         boolean repeat = false;
-        //char[] ungültigeZeichen = {'#','!','/','_','?','€','0','1','2','3','4','5','6','7','8','9'};
-        String[] ungültigeZeichen = {"#","!","/","_","?","€","0","1","2","3","4","5","6","7","8","9"};
         if (args.length > 0) {
             input = args[0];
         } else {
@@ -135,22 +142,14 @@ public class Main {
                     System.out.println("Ungültige Zeichenfolge");
                 System.out.print("Stadtname: ");
                 input = scan.nextLine();
-                if (input.trim().isEmpty()) {
+
+                if (!Pattern.matches("^[a-zA-Z\\s]+$", input))
                     repeat = true;
-                }else {
-                    repeat = false;
-                }
-                for (int i = 0; i < ungültigeZeichen.length; i++) {
-                    if (input.contains(ungültigeZeichen[i])) {
-                        repeat = false;
-                    }else{
-                        repeat = true;
-                    }
-                }
             } while (repeat);
             scan = null;
         }
+
         city = input;
-        fromJson=false;
+        fromJson = false;
     }
 }
