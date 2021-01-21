@@ -55,13 +55,11 @@ public class WeatherDataParser {
                     System.out.format("%4s %5s: %6.2f °C, %s \n", " ", timeStr, temp, dscStr);
 
                 oldDateStr = dateStr;
-
-                return true;
             }
+            return true;
         } catch (IOException e) {
             System.out.println("Fehler beim Lesen der Wetterdaten.");
             return false;
         }
-        return false;
     }
 }
