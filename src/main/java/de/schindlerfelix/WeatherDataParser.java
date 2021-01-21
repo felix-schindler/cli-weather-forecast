@@ -15,9 +15,14 @@ public class WeatherDataParser {
     JSONObject weather;
 
     /**
+     *
      * @param jsonWeatherDataFilename String - JsonWeatherDataFilepath
+     * @return true if the weather was printed successfully, false otherwise
      */
-    public void printWeather(final String jsonWeatherDataFilename) {
+    public boolean printWeather(final String jsonWeatherDataFilename) {
+        if (jsonWeatherDataFilename==null)
+            return false;
+
         // Variablen setzen
         SimpleDateFormat simple_date = new SimpleDateFormat("EEEE, dd.MM");
         SimpleDateFormat simple_time = new SimpleDateFormat("HH:mm");
@@ -50,9 +55,13 @@ public class WeatherDataParser {
                     System.out.format("%4s %5s: %6.2f °C, %s \n", " ", timeStr, temp, dscStr);
 
                 oldDateStr = dateStr;
+
+                return true;
             }
         } catch (IOException e) {
             System.out.println("Fehler beim Lesen der Wetterdaten.");
+            return false;
         }
+        return false;
     }
 }
