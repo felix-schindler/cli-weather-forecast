@@ -116,10 +116,14 @@ public class Main {
                 // Stadtname enthält irgendwas von eingegebenen Stadtnamen
                 // Comment: Has to begin with the same name as the city e g city="Bonn" => "Bonndorf"==true
                 if (cityName/*.substring(0, city.length())*/.contains(city)) {
-                    if (!cityIds.contains(cityID)) {
-                        cityIds.add(cityID);
-                        cityNames.add(cityName);
-                        cityCountries.add(cityCountry);
+
+                    if (cityCountry.contains("DE")) { //Country der zu zeigenden Städte muss "DE" sein
+
+                        if (!cityIds.contains(cityID)) {
+                            cityIds.add(cityID);
+                            cityNames.add(cityName);
+                            cityCountries.add(cityCountry);
+                        }
                     }
                 }
             }
@@ -136,7 +140,7 @@ public class Main {
                 Scanner scan = new Scanner(System.in);
                 int choice = scan.nextInt();
 
-                while (choice<0 || choice>cityIds.size()) {
+                while (choice < 0 || choice > cityIds.size()) {
                     System.out.println("Ungültige Eingabe, bitte versuchen Sie es erneut.");
                     choice = scan.nextInt();
                 }
