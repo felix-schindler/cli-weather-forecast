@@ -77,14 +77,17 @@ public class Main {
         } else {
             Scanner scan = new Scanner(System.in);
             do {
-                if (repeat)
+                if (repeat == true) {
                     System.out.println("Ungültige Zeichenfolge");
+                    repeat = false;
+                }
                 System.out.print("Stadtname: ");
                 input = scan.nextLine();
 
+                //if (!Pattern.matches("^[a-zA-Z_0-9]+$", input))
                 if (!Pattern.matches("^[a-zA-Z\\s]+$", input))
                     repeat = true;
-            } while (repeat);
+            } while (repeat == true);
             scan = null;
         }
 
@@ -117,7 +120,7 @@ public class Main {
                 // Comment: Has to begin with the same name as the city e g city="Bonn" => "Bonndorf"==true
                 if (cityName/*.substring(0, city.length())*/.contains(city)) {
 
-                    if (cityCountry.contains("DE")) { //Country der zu zeigenden Städte muss "DE" sein
+                    if (cityCountry.contains("DE")) { //Country, der zu erscheinenden cities muss "DE" sein
 
                         if (!cityIds.contains(cityID)) {
                             cityIds.add(cityID);
