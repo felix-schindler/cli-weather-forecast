@@ -32,6 +32,22 @@ public class Main {
         wp.printWeather(generateFile());
     }
 
+    public static String generateFile(String givenCity) {
+        if (givenCity==null)
+            return null;
+
+        try {
+            id = Integer.parseInt(givenCity);
+            fromJson = true;
+        } catch (NumberFormatException e) {
+            city = givenCity;
+            fromJson = false;
+            return null;
+        }
+
+        return generateFile();
+    }
+
     /**
      * Generating the WeatherData JSON File for the chosen city
      * Directories:
@@ -108,7 +124,6 @@ public class Main {
 
             ArrayList<Integer> cityIds = new ArrayList<Integer>();
             ArrayList<String> cityNames = new ArrayList<String>();
-            ArrayList<String> cityCountries = new ArrayList<String>();
 
             for (int i = 0; i < citiesJsonJSONArrayLength; i++) {
                 JSONObject cityJson = citiesJson.getJSONArray("cities").getJSONObject(i);
@@ -122,7 +137,6 @@ public class Main {
                     if (!cityIds.contains(cityID) && cityCountry.equals("DE")) {
                         cityIds.add(cityID);
                         cityNames.add(cityName);
-                        cityCountries.add(cityCountry);
                     }
                 }
             }
@@ -132,7 +146,7 @@ public class Main {
                 fromJson = true;
             } else if (cityNames.size()>0) {
                 for (int i = 0; i < cityNames.size(); i++)
-                    System.out.println(i + 1 + " = " + cityNames.get(i) + ", " + cityCountries.get(i));
+                    System.out.println(i + 1 + " = " + cityNames.get(i));
 
                 System.out.println("\nBitte gültige Auswahl 1 bis " + cityNames.size() + " treffen");
 
