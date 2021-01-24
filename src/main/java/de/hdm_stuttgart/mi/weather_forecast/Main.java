@@ -59,7 +59,7 @@ public class Main {
         String fileName, url;
         File logFile = new File("data/temp/logs/cache.log");
 
-        fileName = fromJson ? "data/temp/cache/" + id + ".weatherData.json" : "data/temp/cache/" + city.toLowerCase() + ".weatherData.json";
+        fileName = fromJson ? "data/temp/cache/" + id + ".weatherData.json" : "data/temp/cache/" + city + ".weatherData.json";
 
         File weatherFile = new File(fileName);
         long timeStampNow = System.currentTimeMillis();
@@ -101,14 +101,14 @@ public class Main {
                     System.out.println("Ungültige Zeichenfolge");
 
                 System.out.print("Stadtname: ");
-                input = scan.nextLine();
+                input = scan.nextLine().trim();
 
-                repeat = !Pattern.matches("^[a-zA-Z\\s]+$", input);
+                repeat = !Pattern.matches("^[a-zA-Z\\s]+$", input) || input.isEmpty();
             } while (repeat);
             scan = null;
         }
 
-        city = input;
+        city = input.toLowerCase();
         fromJson = false;
 
         try {
@@ -132,7 +132,7 @@ public class Main {
                 cityCountry = cityJson.getString("country");
 
                 // Stadtname enthält irgendwas von eingegebenen Stadtnamen
-                if (cityName.contains(city)) {
+                if (cityName.toLowerCase().contains(city)) {
                     // Land der zu zeigenden Städte muss "DE" sein
                     if (!cityIds.contains(cityID) && cityCountry.equals("DE")) {
                         cityIds.add(cityID);
@@ -153,7 +153,7 @@ public class Main {
                 Scanner scan = new Scanner(System.in);
                 int choice = scan.nextInt();
 
-                while (choice < 0 || choice > cityIds.size()) {
+                while (choice <= 0 || choice > cityIds.size()) {
                     System.out.println("Ungültige Eingabe, bitte versuchen Sie es erneut.");
                     choice = scan.nextInt();
                 }
