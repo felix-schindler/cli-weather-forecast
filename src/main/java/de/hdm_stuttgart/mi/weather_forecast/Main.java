@@ -34,7 +34,7 @@ public class Main {
 
     /**
      * just for the junit tests
-     * @param givenCity
+     * @param givenCity cityNameOrCityId
      * @return null|string
      */
     public static String generateFile(String givenCity) {
@@ -127,8 +127,8 @@ public class Main {
             JSONArray citiesJsonJSONArray = citiesJson.getJSONArray("cities");
             int citiesJsonJSONArrayLength = citiesJsonJSONArray.length();
 
-            ArrayList<Integer> cityIds = new ArrayList<Integer>();
-            ArrayList<String> cityNames = new ArrayList<String>();
+            ArrayList<Integer> cityIds = new ArrayList<>();
+            ArrayList<String> cityNames = new ArrayList<>();
 
             for (int i = 0; i < citiesJsonJSONArrayLength; i++) {
                 JSONObject cityJson = citiesJson.getJSONArray("cities").getJSONObject(i);
