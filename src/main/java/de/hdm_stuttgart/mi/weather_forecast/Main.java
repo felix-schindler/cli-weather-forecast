@@ -32,9 +32,15 @@ public class Main {
         wp.printWeather(generateFile());
     }
 
+    /**
+     * just for the junit tests
+     * @param givenCity
+     * @return null|string
+     */
     public static String generateFile(String givenCity) {
         if (givenCity==null)
             return null;
+        givenCity = givenCity.toLowerCase();    // normally happens after the user input
 
         try {
             id = Integer.parseInt(givenCity);
@@ -42,7 +48,6 @@ public class Main {
         } catch (NumberFormatException e) {
             city = givenCity;
             fromJson = false;
-            return null;
         }
 
         return generateFile();
