@@ -33,64 +33,9 @@ public class Main {
     }
 
     /**
-     * just for the junit tests
-     * @param givenCity cityNameOrCityId
-     * @return null|string
-     */
-    public static String generateFile(String givenCity) {
-        if (givenCity==null)
-            return null;
-        givenCity = givenCity.toLowerCase();    // normally happens after the user input
-
-        try {
-            id = Integer.parseInt(givenCity);
-            fromJson = true;
-        } catch (NumberFormatException e) {
-            city = givenCity;
-            fromJson = false;
-        }
-
-        return generateFile();
-    }
-
-    /**
-     * Generating the WeatherData JSON File for the chosen city
-     * Directories:
-     * - Logs in "logs/cache.log"
-     * - Caches in "data/temp/cache/city.weatherData.json"
-     * @return String|null - Filepath of the successfully generated File or null, if anythings runs into an error
-     */
-    public static String generateFile() {
-        String fileName, url;
-        File logFile = new File("data/temp/logs/cache.log");
-
-        fileName = fromJson ? "data/temp/cache/" + id + ".weatherData.json" : "data/temp/cache/" + city + ".weatherData.json";
-
-        File weatherFile = new File(fileName);
-        long timeStampNow = System.currentTimeMillis();
-        long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
-
-        // Datei existiert && jünger als 10 Minuten
-        if(weatherFile.isFile() && cacheFileAge<=600) {
-            try {
-                FileUtils.writeStringToFile(logFile, "INFO Re-using cache file "+"data/temp/cache/"+city+".weatherData.json"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
-            } catch (IOException e) {
-                System.out.println("Fehler beim schreiben des Logs");
-            }
-        } else {
-            try {
-                url = fromJson? "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b" : "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
-                FileUtils.copyURLToFile(new URL(url), new File(fileName));
-            } catch (IOException e) {
-                System.out.println("Die von Ihnen eingegebene Stadt existiert in einem Paralleluniversum und ist somit leider außerhalb unserer Reichweite.\nBitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
-                return null;
-            }
-        }
-        return fileName;
-    }
-
-    /**
-     * Handles the command line arguments, requests user input if no arguments, choose city from cities.json
+     * Handles the command line arguments
+     * requests user input if no arguments given
+     * choose city from cities.json
      * @param args String[] - Jar command line arguments
      */
     public static void handleInput(String[] args) {
@@ -146,10 +91,10 @@ public class Main {
                 }
             }
 
-            if (cityNames.size()==1) {
+            if (cityNames.size() == 1) {
                 id = cityIds.get(0);
                 fromJson = true;
-            } else if (cityNames.size()>0) {
+            } else if (cityNames.size() > 0) {
                 for (int i = 0; i < cityNames.size(); i++)
                     System.out.println(i + 1 + " = " + cityNames.get(i));
 
@@ -171,5 +116,64 @@ public class Main {
             System.out.println("Fehler beim Lesen der Auswahlstädte, die Anfrage wird daher mit der zu Beginn eingegebenen Stadt stattfinden.");
             fromJson = false;
         }
+    }
+
+    /**
+     * Generating the WeatherData JSON File for the chosen city
+     * Directories:<br>
+     * - Logs in "logs/cache.log"<br>
+     * - Caches in "data/temp/cache/city.weatherData.json"
+     * @return String|null - Filepath of the successfully generated File or null, if anythings runs into an error
+     */
+    public static String generateFile() {
+        String fileName, url;
+
+        File logFile = new File("data/temp/logs/cache.log");
+        fileName = fromJson ? "data/temp/cache/" + id + ".weatherData.json" : "data/temp/cache/" + city + ".weatherData.json";
+
+        File weatherFile = new File(fileName);
+        long timeStampNow = System.currentTimeMillis();
+        long cacheFileAge = (timeStampNow-weatherFile.lastModified())/1000;
+
+        // Datei existiert && jünger als 10 Minuten
+        if(weatherFile.isFile() && cacheFileAge<=600) {
+            try {
+                FileUtils.writeStringToFile(logFile, "main INFO  weather.Forecast - Re-using cache file "+"'data/temp/cache/"+city+".weatherData.json'"+" from "+cacheFileAge+" seconds ago\n", "ISO-8859-1", true);
+            } catch (IOException e) {
+                System.out.println("Fehler beim schreiben des Logs");
+            }
+        } else {
+            try {
+                url = fromJson? "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&id="+id+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b" : "https://api.openweathermap.org/data/2.5/forecast?lang=de&units=metric&q="+city+"&appid=5f54d5225ad6721e8f86112bbfaa6e7b";
+                FileUtils.copyURLToFile(new URL(url), new File(fileName));
+            } catch (IOException e) {
+                System.out.println("Die von Ihnen eingegebene Stadt existiert in einem Paralleluniversum und ist somit leider außerhalb unserer Reichweite.\nBitte versuchen Sie es erneut und überprüfen Sie Ihre Angaben.");
+                return null;
+            }
+        }
+        return fileName;
+    }
+
+    /**
+     * ignore me, just for unit tests
+     * @param givenCity cityName or cityId
+     * @return String|null - Filepath of the successfully generated File or null, if anythings runs into an error
+     */
+    public static String generateFile(String givenCity) {
+        if (givenCity==null)
+            return null;
+        givenCity = givenCity.toLowerCase();    // normally happens after the user input
+
+        try {
+            city = givenCity;
+            id = Integer.parseInt(givenCity);
+            fromJson = true;
+        } catch (NumberFormatException e) {
+            city = givenCity;
+            id = -1;
+            fromJson = false;
+        }
+
+        return generateFile();
     }
 }

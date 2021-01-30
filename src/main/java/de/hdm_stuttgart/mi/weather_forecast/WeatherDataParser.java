@@ -15,12 +15,12 @@ public class WeatherDataParser {
     JSONObject weather;
 
     /**
-     *
-     * @param jsonWeatherDataFilename String - JsonWeatherDataFilepath
-     * @return true if the weather was printed successfully, false otherwise
+     * Prints the weather
+     * @param jsonWeatherDataFilename String - Path of weather data file
+     * @return whether the weather was printed successfully
      */
     public boolean printWeather(final String jsonWeatherDataFilename) {
-        if (jsonWeatherDataFilename==null)
+        if (jsonWeatherDataFilename == null)
             return false;
 
         // Variablen setzen
@@ -49,7 +49,7 @@ public class WeatherDataParser {
                     System.out.println("\n"+dateStr);
                 }
 
-                if (temp>0)
+                if (temp > 0)
                     System.out.format("%4s %5s:  %5.2f °C, %s \n", " ", timeStr, temp, dscStr);
                 else
                     System.out.format("%4s %5s: %6.2f °C, %s \n", " ", timeStr, temp, dscStr);

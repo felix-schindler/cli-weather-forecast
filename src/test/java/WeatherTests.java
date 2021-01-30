@@ -1,5 +1,3 @@
-package test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.hdm_stuttgart.mi.weather_forecast.Main;
@@ -17,8 +15,9 @@ public class WeatherTests {
             () -> assertNotNull(Main.generateFile("Winchester-on-the-Severn")),
             () -> assertNotNull(Main.generateFile("Frankfurt am Main")),
             () -> assertNotNull(Main.generateFile("lOndOn")),
-            () -> assertNotNull(Main.generateFile("BOnn"))
-    );
+            () -> assertNotNull(Main.generateFile("bONn")),
+            () -> assertNotNull(Main.generateFile("köLn"))
+        );
     }
 
     @Test
@@ -49,7 +48,7 @@ public class WeatherTests {
     }
 
     @Test
-    public void WeatherDataParserFalse() {
+    public void printWeatherShouldBeFalse() {
         WeatherDataParser test = new WeatherDataParser();
         assertAll("Should return False",
                 () -> assertFalse(test.printWeather(".idea")),
@@ -61,7 +60,7 @@ public class WeatherTests {
     }
 
     @Test
-    public void WeatherDataParserTrue(){
+    public void printWeatherShouldBeTrue(){
         creatingWeatherFileShouldNotBeNullByCityName();   // Depends on another Test to work
         creatingWeatherFileShouldNotBeNullByCityId();     // Depends on another Test to work
 
@@ -71,6 +70,7 @@ public class WeatherTests {
                 () -> assertTrue(test.printWeather("data/temp/cache/stuttgart.weatherData.json")),
                 () -> assertTrue(test.printWeather("data/temp/cache/384848.weatherData.json")),
                 () -> assertTrue(test.printWeather("data/temp/cache/bonn.weatherData.json")),
+                () -> assertTrue(test.printWeather("data/temp/cache/köln.weatherData.json")),
                 () -> assertTrue(test.printWeather("data/temp/cache/paris.weatherData.json")),
                 () -> assertTrue(test.printWeather("data/temp/cache/london.weatherData.json")),
                 () -> assertTrue(test.printWeather("data/temp/cache/winchester-on-the-severn.weatherData.json")),
