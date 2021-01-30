@@ -2,7 +2,7 @@
 
 ## Command line
 Download the ZIP Archive and unzip it:<br>
-`foo@bar:~$ wget https://gitlab.mi.hdm-stuttgart.de/fs146/weather-forecast/uploads/9c2e2571b153117e4940d6b132e29e28/weather-forecast.zip && unzip weather-forecast.zip -d weather-forecast`
+`foo@bar:~$ wget https://cdn.schindlerfelix.de/weather-forecast.zip && unzip weather-forecast.zip -d weather-forecast`
 
 ### Usage 
 Change directory to the unzipped Folder<br>
